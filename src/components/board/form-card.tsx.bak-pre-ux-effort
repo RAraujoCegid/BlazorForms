@@ -24,13 +24,6 @@ export const FormCard = memo(function FormCard({ form, index, onClick, selection
     else onClick(form)
   }
 
-  const sprintEstimativaLabel = [
-    form.sprint != null ? `Sprint ${form.sprint}` : null,
-    form.estimativa != null ? `${form.estimativa} SP` : null,
-  ].filter(Boolean).join(" · ")
-  const uxLabel = form.uxEffort && form.uxEffort !== "Não Aplicável" ? `UX: ${form.uxEffort}` : null
-  const metaLabel = [sprintEstimativaLabel, uxLabel].filter(Boolean).join(" | ")
-
   return (
     <Draggable draggableId={form.id} index={index} isDragDisabled={selectionMode}>
       {(provided, snapshot) => (
@@ -78,10 +71,13 @@ export const FormCard = memo(function FormCard({ form, index, onClick, selection
             <p className="text-[10px] text-slate-400 mt-0.5">{form.loc.toLocaleString("pt-PT")} LOC</p>
           )}
 
-          {/* Sprint + Estimativa + UX */}
-          {metaLabel && (
+          {/* Sprint + Estimativa */}
+          {(form.sprint != null || form.estimativa != null) && (
             <p className="text-[10px] text-slate-500 font-medium mt-1">
-              {metaLabel}
+              {[
+                form.sprint != null ? `Sprint ${form.sprint}` : null,
+                form.estimativa != null ? `${form.estimativa} SP` : null,
+              ].filter(Boolean).join(" · ")}
             </p>
           )}
 

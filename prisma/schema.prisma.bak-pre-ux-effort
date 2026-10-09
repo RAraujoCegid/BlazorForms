@@ -38,7 +38,6 @@ model Form {
   dataInicial   String?
   dataFinal     String?
   estimativa    Float?
-  uxEffort      String   @default("Não Aplicável")
   createdAt      DateTime       @default(now())
   updatedAt      DateTime       @updatedAt
 

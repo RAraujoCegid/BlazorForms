@@ -26,7 +26,6 @@ export interface FormRecord {
   dataInicial: string | null
   dataFinal: string | null
   estimativa: number | null
-  uxEffort: string
   createdAt: string
   updatedAt: string
 }

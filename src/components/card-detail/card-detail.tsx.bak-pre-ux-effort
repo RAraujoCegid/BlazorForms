@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import type { FormDetail, UserRecord, FormRecord } from "@/types"
-import { STATUSES, CLASSIFICATION_STYLE, STATUS_COLORS, UX_EFFORT_OPTIONS, UX_EFFORT_COLORS, CHECKLIST_TEMPLATES, CHECKLIST_TEMPLATE, checklistTotalFor } from "@/lib/constants"
+import { STATUSES, CLASSIFICATION_STYLE, STATUS_COLORS, CHECKLIST_TEMPLATES, CHECKLIST_TEMPLATE, checklistTotalFor } from "@/lib/constants"
 import type { ChecklistNode } from "@/lib/constants"
 import { X, Send, ChevronRight, CheckSquare } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -143,7 +143,6 @@ export function CardDetail({ form, users, currentUserId: _currentUserId, onClose
     dataInicial?: string | null
     dataFinal?: string | null
     estimativa?: number | null
-    uxEffort?: string
   }) => {
     const res = await fetch(`/api/forms/${form.id}`, {
       method: "PATCH",
@@ -318,31 +317,6 @@ export function CardDetail({ form, users, currentUserId: _currentUserId, onClose
               onFocus={(e) => (e.target.style.boxShadow = "0 0 0 2px #2962FF")}
               onBlur={(e) => (e.target.style.boxShadow = "")}
             />
-          </div>
-
-          {/* Esforço UX */}
-          <div>
-            <p className="text-xs font-medium text-slate-500 mb-2">Esforço UX</p>
-            <div className="flex flex-wrap gap-2">
-              {UX_EFFORT_OPTIONS.map((opt) => {
-                const c = UX_EFFORT_COLORS[opt]
-                const active = (localForm.uxEffort ?? "Não Aplicável") === opt
-                return (
-                  <button
-                    key={opt}
-                    onClick={() => updateField({ uxEffort: opt })}
-                    className={cn(
-                      "px-3 py-1 rounded-full text-xs font-medium border transition-all",
-                      active
-                        ? cn(c.bg, c.text, c.border, "ring-2 ring-offset-1 ring-current")
-                        : "bg-white text-slate-500 border-slate-200 hover:border-slate-400"
-                    )}
-                  >
-                    {opt}
-                  </button>
-                )
-              })}
-            </div>
           </div>
 
           {/* Status */}

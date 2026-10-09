@@ -40,13 +40,13 @@ export async function GET(request: NextRequest) {
       orderBy: [{ module: "asc" }, { className: "asc" }],
     }),
     // No WHERE — bypasses stale Prisma client for new fields; avoids IN-clause parameter limits
-    prisma.$queryRaw<{ id: string; checklistData: string | null; isBlocked: number; blockedReason: string | null; dueDate: string | null; sprint: number | null; dataInicial: string | null; dataFinal: string | null; estimativa: number | null; uxEffort: string | null }[]>`
-      SELECT "id", "checklistData", "isBlocked", "blockedReason", "dueDate", "sprint", "dataInicial", "dataFinal", "estimativa", "uxEffort" FROM "Form"
+    prisma.$queryRaw<{ id: string; checklistData: string | null; isBlocked: number; blockedReason: string | null; dueDate: string | null; sprint: number | null; dataInicial: string | null; dataFinal: string | null; estimativa: number | null }[]>`
+      SELECT "id", "checklistData", "isBlocked", "blockedReason", "dueDate", "sprint", "dataInicial", "dataFinal", "estimativa" FROM "Form"
     `,
   ])
 
-  type ChecklistRow = { id: string; checklistData: string | null; isBlocked: number; blockedReason: string | null; dueDate: string | null; sprint: number | null; dataInicial: string | null; dataFinal: string | null; estimativa: number | null; uxEffort: string | null }
-  const rawMap: Record<string, { checklistData: string | null; isBlocked: boolean; blockedReason: string | null; dueDate: string | null; sprint: number | null; dataInicial: string | null; dataFinal: string | null; estimativa: number | null; uxEffort: string }> = {}
+  type ChecklistRow = { id: string; checklistData: string | null; isBlocked: number; blockedReason: string | null; dueDate: string | null; sprint: number | null; dataInicial: string | null; dataFinal: string | null; estimativa: number | null }
+  const rawMap: Record<string, { checklistData: string | null; isBlocked: boolean; blockedReason: string | null; dueDate: string | null; sprint: number | null; dataInicial: string | null; dataFinal: string | null; estimativa: number | null }> = {}
   for (const r of checklistRows as ChecklistRow[]) {
     rawMap[r.id] = {
       checklistData: r.checklistData,
@@ -57,7 +57,6 @@ export async function GET(request: NextRequest) {
       dataInicial: r.dataInicial,
       dataFinal: r.dataFinal,
       estimativa: r.estimativa,
-      uxEffort: r.uxEffort ?? "Não Aplicável",
     }
   }
 
@@ -70,7 +69,6 @@ export async function GET(request: NextRequest) {
     dataInicial: rawMap[f.id]?.dataInicial ?? null,
     dataFinal: rawMap[f.id]?.dataFinal ?? null,
     estimativa: rawMap[f.id]?.estimativa ?? null,
-    uxEffort: rawMap[f.id]?.uxEffort ?? "Não Aplicável",
     checklistProgress: checklistProgress(rawMap[f.id]?.checklistData ?? null, f.classification),
   }))
 
